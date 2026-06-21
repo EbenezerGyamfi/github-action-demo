@@ -1,6 +1,5 @@
 const path = require('path');
 const fs = require('fs');
-
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -19,9 +18,8 @@ app.get('/story', (req, res) => {
   });
 });
 
-
 app.get('/health', (req, res) => {
-    res.status(200).json({ story: 'ok' });
+  res.status(200).json({ story: 'ok' });
 });
 
 app.post('/story', (req, res) => {
@@ -29,6 +27,7 @@ app.post('/story', (req, res) => {
   if (newText.trim().length === 0) {
     return res.status(422).json({ message: 'Text must not be empty!' });
   }
+
   fs.appendFile(filePath, newText + '\n', (err) => {
     if (err) {
       return res.status(500).json({ message: 'Storing the text failed.' });
@@ -37,6 +36,10 @@ app.post('/story', (req, res) => {
   });
 });
 
-app.listen(3000, '0.0.0.0', () => {
-  console.log('Server running on port 3000');
-});
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(3000, '0.0.0.0', () => {
+    console.log('Server running on port 3000');
+  });
+}
